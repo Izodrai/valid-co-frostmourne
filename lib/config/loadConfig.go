@@ -7,7 +7,7 @@ import (
 )
 
 type Config struct {
-	DbObj        tools.Database `json:"Database"`
+	DbObj tools.Database `json:"Database"`
 }
 
 func (c *Config) LoadConfig(configFile string) error {

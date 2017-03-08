@@ -1,10 +1,10 @@
 package tools
 
 import (
-  	"database/sql"
-  	"errors"
-    "time"
-  	_ "github.com/go-sql-driver/mysql"
+	"database/sql"
+	"errors"
+	_ "github.com/go-sql-driver/mysql"
+	"time"
 )
 
 type Database struct {
@@ -17,20 +17,20 @@ type Database struct {
 }
 
 type Bid struct {
-	Sv_id     		int
-	Bid_at 				time.Time
-  Last_bid      float64
-  S_id          int
-  S_reference   string
-  Sa_id         int
-  Sma_c         float64
-  Sma_l         float64
-  Ema_c         float64
-  Ema_l         float64
-  Macd_value    float64
-  Macd_trigger  float64
-  Macd_signal   float64
-  Macd_absol_trigger_signal float64
+	Sv_id                     int
+	Bid_at                    time.Time
+	Last_bid                  float64
+	S_id                      int
+	S_reference               string
+	Sa_id                     int
+	Sma_c                     float64
+	Sma_l                     float64
+	Ema_c                     float64
+	Ema_l                     float64
+	Macd_value                float64
+	Macd_trigger              float64
+	Macd_signal               float64
+	Macd_absol_trigger_signal float64
 }
 
 func (d *Database) DataSourceName() string {

@@ -1,15 +1,15 @@
 package db
 
 import (
-  "time"
-	"../log"
 	"../config"
+	"../log"
 	"../tools"
 	"database/sql"
+	"time"
 )
 
 func CountVLast(conf *config.Config) (int, error) {
-  var ct_b int
+	var ct_b int
 	var err error
 	var d *sql.DB
 	var rows1 *sql.Rows
@@ -41,7 +41,7 @@ func CountVLast(conf *config.Config) (int, error) {
 }
 
 func LoadBid(conf *config.Config, ct_b int, bids *[]tools.Bid) error {
-  time.Sleep(1 * time.Second)
+	time.Sleep(1 * time.Second)
 
 	log.Info("Load bids")
 
@@ -55,9 +55,9 @@ func LoadBid(conf *config.Config, ct_b int, bids *[]tools.Bid) error {
 		return err
 	}
 
-  query := "SELECT sv_id, bid_at, last_bid, sa_id, sma_c, sma_l, ema_c, ema_l, macd_value, macd_trigger, macd_signal, macd_absol_trigger_signal FROM v_last_5_days_stock_values WHERE s_id = 1 AND sa_id IS NOT NULL"
+	query := "SELECT sv_id, bid_at, last_bid, sa_id, sma_c, sma_l, ema_c, ema_l, macd_value, macd_trigger, macd_signal, macd_absol_trigger_signal FROM v_last_5_days_stock_values WHERE s_id = 1 AND sa_id IS NOT NULL"
 
-  rows1, err = d.Query(query)
+	rows1, err = d.Query(query)
 
 	if err != nil {
 		d.Close()
@@ -68,27 +68,27 @@ func LoadBid(conf *config.Config, ct_b int, bids *[]tools.Bid) error {
 	for rows1.Next() {
 		var (
 			BidAt_b []byte
-			b   tools.Bid
+			b       tools.Bid
 		)
 
-    b.S_id = 1
-    b.S_reference = "EURUSD"
+		b.S_id = 1
+		b.S_reference = "EURUSD"
 
 		bar1.Increment()
 
 		err = rows1.Scan(
 			&b.Sv_id,
 			&BidAt_b,
-      &b.Last_bid,
-      &b.Sa_id,
-      &b.Sma_c,
-      &b.Sma_l,
-      &b.Ema_c,
-      &b.Ema_l,
-      &b.Macd_value,
-      &b.Macd_trigger,
-      &b.Macd_signal,
-      &b.Macd_absol_trigger_signal)
+			&b.Last_bid,
+			&b.Sa_id,
+			&b.Sma_c,
+			&b.Sma_l,
+			&b.Ema_c,
+			&b.Ema_l,
+			&b.Macd_value,
+			&b.Macd_trigger,
+			&b.Macd_signal,
+			&b.Macd_absol_trigger_signal)
 
 		if err != nil {
 			d.Close()
@@ -105,7 +105,7 @@ func LoadBid(conf *config.Config, ct_b int, bids *[]tools.Bid) error {
 	}
 
 	d.Close()
-  bar1.Finish()
+	bar1.Finish()
 	log.Info("Bids loaded")
-  return nil
+	return nil
 }
