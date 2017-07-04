@@ -22,7 +22,7 @@ func CountVLast(conf *config.Config) (int, error) {
 
 	log.WhiteInfo("Search nbr of bids in database")
 
-	rows1, err = d.Query(`SELECT COUNT(*) FROM stock_values WHERE symbol_id = 41 AND calculations != "[]]"`)
+	rows1, err = d.Query(`SELECT COUNT(*) FROM stock_values WHERE symbol_id = 41 AND calculations != "[]"`)
 
 	if err != nil {
 		return 0, err
@@ -56,7 +56,7 @@ func LoadBid(conf *config.Config, ct_b int, bids *[]tools.Bid) error {
 		return err
 	}
 
-	query := `SELECT id, symbol_id, bid_at, last_bid, calculations FROM stock_values WHERE symbol_id = 41 AND calculations != "[]" ORDER BY bid_at`
+	query := `SELECT id, symbol_id, bid_at, last_bid, calculations FROM stock_values WHERE symbol_id = 41 AND calculations != "[]" ORDER BY bid_at LIMIT 250`
 
 	rows1, err = d.Query(query)
 

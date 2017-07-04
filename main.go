@@ -45,5 +45,14 @@ func main() {
 		return
 	}
 
-	calc.Calc_potential(bids)
+	var open_pos, close_pos []tools.Position
+
+	calc.Calc_potential(bids, &open_pos, &close_pos)
+
+	//var total float64
+	/*
+	for _, close_pos := range close_pos {
+		log.Info(close_pos)
+	}
+	*/
 }

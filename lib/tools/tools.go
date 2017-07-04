@@ -29,6 +29,16 @@ type Calculations struct {
 	Value		float64
 }
 
+type Position struct {
+	Buy bool
+	Open_time time.Time
+	Open_value float64
+	Close_time time.Time
+	Close_value float64
+  Diff_value float64
+	Close_for string
+}
+
 func (d *Database) DataSourceName() string {
 	return d.Login + ":" + d.Password + "@" + d.Protocol + "(" + d.Host + ":" + d.Port + ")/" + d.Database
 }

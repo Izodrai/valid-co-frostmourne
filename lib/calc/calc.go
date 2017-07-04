@@ -7,13 +7,139 @@ import (
 	"time"
 )
 
+func Calc_potential(bids []tools.Bid, open_pos, close_pos *[]tools.Position) {
 
-func Calc_potential(bids []tools.Bid) {
+	fmt.Println("")
+	fmt.Println("#################################################")
+	log.Info("Calcul des bénéfices potentiels :")
+	fmt.Println("")
+	fmt.Println("")
 
+	var last_bid tools.Bid
 
+	for _, bid := range bids {
 
+		last_bid = bid
+
+		var sma_12, sma_24 float64
+
+		for _, calc := range bid.Calculations {
+			switch calc.Type {
+			case "sma_12":
+				sma_12 = calc.Value
+			case "sma_24":
+				sma_24 = calc.Value
+			}
+		}
+
+		if sma_12 == 0 {
+			if len(*open_pos) != 0 {
+				clos_all_pos(open_pos, close_pos, bid)
+				//log.Info("close all activ pos because sma_12 = ", sma_12)
+			}
+			continue
+		}
+
+		if sma_24 == 0 {
+			if len(*open_pos) != 0 {
+				clos_all_pos(open_pos, close_pos, bid)
+				//log.Info("close all activ pos because sma_24 = ", sma_24)
+			}
+			continue
+		}
+
+		var diff_12_24 float64
+		diff_12_24 = sma_24 - sma_12
+
+		var tmp_open_pos []tools.Position
+
+		log.Info("#######################")
+		log.Info()
+		log.Info("sma_24 : ", sma_24)
+		log.Info("sma_12 : ", sma_12)
+		log.Info("sma_24 - sma_12 : ", diff_12_24)
+		log.Info()
+		log.Info("bid.Bid_at : ", bid.Bid_at)
+		log.Info("bid.Bid_at : ", bid.Last_bid)
+		log.Info()
+
+		/*
+		for _, p := range *open_pos {
+
+			log.Info("######")
+			log.Info("p.Buy : ", p.Buy)
+			log.Info("p.Open_time : ", p.Open_time)
+			log.Info("p.Open_value : ", p.Open_value)
+
+			if p.Buy {
+				if diff_12_24 <= 1 {
+					p.Close_time = bid.Bid_at
+					p.Close_value = bid.Last_bid
+					p.Diff_value = p.Close_value - p.Open_value
+					p.Close_for = "diff_12_24 <= 0"
+
+					log.Info("p.Close_time : ", p.Close_time)
+					log.Info("p.Close_value : ", p.Close_value)
+					log.Info("p.Diff_value : ", p.Diff_value)
+					log.Info("p.Close_for : ", p.Close_for)
+
+					*close_pos = append(*close_pos, p)
+					continue
+				}
+			} else {
+				if diff_12_24 >= -1 {
+					p.Close_time = bid.Bid_at
+					p.Close_value = bid.Last_bid
+					p.Diff_value = p.Open_value - p.Close_value
+					p.Close_for = "diff_12_24 >= 0"
+
+					log.Info("p.Close_time : ", p.Close_time)
+					log.Info("p.Close_value : ", p.Close_value)
+					log.Info("p.Diff_value : ", p.Diff_value)
+					log.Info("p.Close_for : ", p.Close_for)
+
+					*close_pos = append(*close_pos, p)
+					continue
+				}
+			}
+
+			tmp_open_pos = append(tmp_open_pos, p)
+		}
+
+		*open_pos = tmp_open_pos
+
+		log.Info("#######################")
+		*/
+
+		if diff_12_24 <= -1 {
+			*open_pos = append(*open_pos, tools.Position{true, bid.Bid_at, bid.Last_bid, time.Time{}, 0.0, 0.0,""})
+		} else if diff_12_24 >= 1 {
+			*open_pos = append(*open_pos, tools.Position{false, bid.Bid_at, bid.Last_bid, time.Time{}, 0.0, 0.0,""})
+		}
+	}
+
+	clos_all_pos(open_pos, close_pos, last_bid)
 }
 
+func clos_all_pos(open_pos, close_pos *[]tools.Position, bid tools.Bid) {
+
+	for _, p := range *open_pos {
+
+		p.Close_time = bid.Bid_at
+		p.Close_value = bid.Last_bid
+
+		if p.Buy {
+			p.Diff_value = p.Close_value - p.Open_value
+		} else {
+			p.Diff_value = p.Open_value - p.Close_value
+		}
+
+		p.Close_for = "Close all pos"
+		*close_pos = append(*close_pos, p)
+	}
+
+	*open_pos = []tools.Position{}
+}
 
 /*
 type Position struct {
