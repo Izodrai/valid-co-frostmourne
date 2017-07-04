@@ -7,6 +7,15 @@ import (
 	"time"
 )
 
+
+func Calc_potential(bids []tools.Bid) {
+
+
+
+}
+
+
+/*
 type Position struct {
   pre_open bool
   open bool
@@ -19,6 +28,8 @@ type Position struct {
   close_value float64
   diff_value float64
 }
+
+
 
 const waiting_min = 1
 
@@ -205,3 +216,4 @@ func Calc_potential(bids []tools.Bid) {
 	fmt.Println("Total tot_lost :", tot_lost, "unité")
 	fmt.Println("#################################################")
 }
+*/

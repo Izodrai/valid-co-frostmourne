@@ -4,6 +4,7 @@ import (
 	"../config"
 	"../log"
 	"../tools"
+	"encoding/json"
 	"database/sql"
 	"time"
 )
@@ -21,7 +22,7 @@ func CountVLast(conf *config.Config) (int, error) {
 
 	log.WhiteInfo("Search nbr of bids in database")
 
-	rows1, err = d.Query(`SELECT COUNT(*) FROM v_last_5_days_stock_values WHERE s_id = 1 AND sa_id IS NOT NULL`)
+	rows1, err = d.Query(`SELECT COUNT(*) FROM stock_values WHERE symbol_id = 41 AND calculations != "[]]"`)
 
 	if err != nil {
 		return 0, err
@@ -55,7 +56,7 @@ func LoadBid(conf *config.Config, ct_b int, bids *[]tools.Bid) error {
 		return err
 	}
 
-	query := "SELECT sv_id, bid_at, last_bid, sa_id, sma_c, sma_l, ema_c, ema_l, macd_value, macd_trigger, macd_signal, macd_absol_trigger_signal FROM v_last_5_days_stock_values WHERE s_id = 1 AND sa_id IS NOT NULL"
+	query := `SELECT id, symbol_id, bid_at, last_bid, calculations FROM stock_values WHERE symbol_id = 41 AND calculations != "[]" ORDER BY bid_at`
 
 	rows1, err = d.Query(query)
 
@@ -67,28 +68,18 @@ func LoadBid(conf *config.Config, ct_b int, bids *[]tools.Bid) error {
 
 	for rows1.Next() {
 		var (
-			BidAt_b []byte
+			BidAt_b, Calc_b []byte
 			b       tools.Bid
 		)
-
-		b.S_id = 1
-		b.S_reference = "EURUSD"
 
 		bar1.Increment()
 
 		err = rows1.Scan(
 			&b.Sv_id,
+			&b.S_id,
 			&BidAt_b,
-			&b.Last_bid,
-			&b.Sa_id,
-			&b.Sma_c,
-			&b.Sma_l,
-			&b.Ema_c,
-			&b.Ema_l,
-			&b.Macd_value,
-			&b.Macd_trigger,
-			&b.Macd_signal,
-			&b.Macd_absol_trigger_signal)
+		  &b.Last_bid,
+		  &Calc_b)
 
 		if err != nil {
 			d.Close()
@@ -98,6 +89,11 @@ func LoadBid(conf *config.Config, ct_b int, bids *[]tools.Bid) error {
 		b.Bid_at, err = time.Parse("2006-01-02 15:04:05", string(BidAt_b))
 		if err != nil {
 			d.Close()
+			return err
+		}
+
+		err = json.Unmarshal(Calc_b, &b.Calculations)
+		if err != nil {
 			return err
 		}
 
