@@ -56,7 +56,7 @@ func LoadBid(conf *config.Config, ct_b int, bids *[]tools.Bid) error {
 		return err
 	}
 
-	query := `SELECT id, symbol_id, bid_at, last_bid, calculations FROM stock_values WHERE symbol_id = 41 AND calculations != "[]" ORDER BY bid_at LIMIT 250`
+	query := `SELECT id, symbol_id, bid_at, last_bid, calculations FROM stock_values WHERE symbol_id = 41 AND calculations != "[]" ORDER BY bid_at`
 
 	rows1, err = d.Query(query)
 

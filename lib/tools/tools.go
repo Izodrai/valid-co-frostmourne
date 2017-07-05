@@ -37,6 +37,7 @@ type Position struct {
 	Close_value float64
   Diff_value float64
 	Close_for string
+	Calculations []Calculations
 }
 
 func (d *Database) DataSourceName() string {
