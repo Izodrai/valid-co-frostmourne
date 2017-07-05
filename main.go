@@ -19,6 +19,7 @@ func init() {
 }
 
 func main() {
+
 	var err error
 	var conf config.Config
 
@@ -54,22 +55,6 @@ func main() {
 
 	calc.Calc_potential(bids, &open_pos, &close_pos)
 
-	/*
-	var total float64
-
-	for _, close_pos := range close_pos {
-		log.Info("############")
-		log.Info("close_pos.Buy : ", close_pos.Buy)
-		log.Info("close_pos.Open_time : ", close_pos.Open_time)
-		log.Info("close_pos.Close_time : ", close_pos.Close_time)
-		log.Info("close_pos.Open_value : ", close_pos.Open_value)
-		log.Info("close_pos.Close_value : ", close_pos.Close_value)
-		log.Info("close_pos.Diff_value : ", close_pos.Diff_value)
-		log.Info("close_pos.Close_for : ", close_pos.Close_for)
-		total = total+close_pos.Diff_value
-	}
-	log.Info("total : ", total)
-	*/
 	if err = writeCSVReports(bids, close_pos); err != nil {
 		log.FatalError(err)
 	}

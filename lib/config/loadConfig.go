@@ -8,6 +8,7 @@ import (
 
 type Config struct {
 	DbObj tools.Database `json:"Database"`
+	SymbolId int
 }
 
 func (c *Config) LoadConfig(configFile string) error {
