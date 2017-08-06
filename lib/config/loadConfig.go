@@ -9,6 +9,7 @@ import (
 type Config struct {
 	DbObj tools.Database `json:"Database"`
 	SymbolId int
+	ReportsFolder string
 }
 
 func (c *Config) LoadConfig(configFile string) error {

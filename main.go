@@ -10,6 +10,7 @@ import (
 	"strconv"
 	"fmt"
 	"time"
+	"path"
 	"strings"
 	"os"
 )
@@ -55,12 +56,12 @@ func main() {
 
 	calc.Calc_potential(bids, &open_pos, &close_pos)
 
-	if err = writeCSVReports(bids, close_pos); err != nil {
+	if err = writeCSVReports(&conf, bids, close_pos); err != nil {
 		log.FatalError(err)
 	}
 }
 
-func writeCSVReports(bids []tools.Bid, close_pos []tools.Position) error {
+func writeCSVReports(conf *config.Config, bids []tools.Bid, close_pos []tools.Position) error {
 
 	if len(bids) == 0 {
 		return errors.New("No bids")
@@ -106,7 +107,8 @@ func writeCSVReports(bids []tools.Bid, close_pos []tools.Position) error {
 		lines_bids = append(lines_bids, []string{strconv.Itoa(b.Sv_id), b.Bid_at.Format("2006-01-02 15:04:05"), strconv.FormatFloat(b.Last_bid, 'f', 0, 32), strconv.FormatFloat(sma_12, 'f', 0, 32), strconv.FormatFloat(sma_24, 'f', 0, 32), strconv.FormatFloat(diff_sma_12_24, 'f', 0, 32)})
 	}
 
-	f, err := os.OpenFile("reports/bids_"+strconv.Itoa(bids[0].S_id)+"_"+time.Now().Format("2006-01-02_15:04:05")+".csv", os.O_APPEND|os.O_CREATE|os.O_RDWR, os.ModeAppend|0755)
+	//f, err := os.OpenFile(path.Join(conf.ReportsFolder,"bids_"+strconv.Itoa(bids[0].S_id)+"_"+time.Now().Format("2006-01-02_15:04:05")+".csv"), os.O_APPEND|os.O_CREATE|os.O_RDWR, os.ModeAppend|0755)
+	f, err := os.OpenFile(path.Join(conf.ReportsFolder,"bids_"+strconv.Itoa(bids[0].S_id)+"_"+time.Now().Format("2006-01-02_15:04:05")+".csv"), os.O_CREATE|os.O_RDWR, 0755)
 	if err != nil {
 		return err
 	}
@@ -155,7 +157,7 @@ func writeCSVReports(bids []tools.Bid, close_pos []tools.Position) error {
 		lines_pos = append(lines_pos, []string{pos,c.Open_time.Format("2006-01-02 15:04:05"),c.Close_time.Format("2006-01-02 15:04:05"),strconv.FormatFloat(c.Open_value, 'f', 0, 32),strconv.FormatFloat(c.Close_value, 'f', 0, 32),strconv.FormatFloat(c.Diff_value, 'f', 0, 32), c.Close_for,strconv.FormatFloat(sma_12, 'f', 0, 32),strconv.FormatFloat(sma_24, 'f', 0, 32),strconv.FormatFloat(diff_sma_12_24, 'f', 0, 32)})
 	}
 
-	f_pos, err := os.OpenFile("reports/pos_sma_"+strconv.Itoa(bids[0].S_id)+"_"+time.Now().Format("2006-01-02_15:04:05")+".csv", os.O_APPEND|os.O_CREATE|os.O_RDWR, os.ModeAppend|0755)
+	f_pos, err := os.OpenFile(path.Join(conf.ReportsFolder,"pos_sma_"+strconv.Itoa(bids[0].S_id)+"_"+time.Now().Format("2006-01-02_15:04:05")+".csv"), os.O_APPEND|os.O_CREATE|os.O_RDWR, os.ModeAppend|0755)
 	if err != nil {
 		return err
 	}
