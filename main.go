@@ -7,12 +7,12 @@ import (
 	"./lib/log"
 	"./lib/tools"
 	"errors"
-	"strconv"
 	"fmt"
-	"time"
-	"path"
-	"strings"
 	"os"
+	"path"
+	"strconv"
+	"strings"
+	"time"
 )
 
 func init() {
@@ -82,9 +82,9 @@ func writeCSVReports(conf *config.Config, bids []tools.Bid, close_pos []tools.Po
 
 	var lines_bids [][]string
 
-	lines_bids = append(lines_bids, []string{"db_id","T Bids","V Bids","Sma_12","Sma_24","Sma_24-Sma_12"})
+	lines_bids = append(lines_bids, []string{"db_id", "T Bids", "V Bids", "Sma_12", "Sma_24", "Sma_24-Sma_12"})
 
-	for _,b := range bids {
+	for _, b := range bids {
 
 		var sma_12, sma_24 float64
 
@@ -100,7 +100,7 @@ func writeCSVReports(conf *config.Config, bids []tools.Bid, close_pos []tools.Po
 		var diff_sma_12_24 float64
 		diff_sma_12_24 = sma_24 - sma_12
 
-		if sma_12 == 0 || sma_24 == 0{
+		if sma_12 == 0 || sma_24 == 0 {
 			diff_sma_12_24 = 0
 		}
 
@@ -108,7 +108,7 @@ func writeCSVReports(conf *config.Config, bids []tools.Bid, close_pos []tools.Po
 	}
 
 	//f, err := os.OpenFile(path.Join(conf.ReportsFolder,"bids_"+strconv.Itoa(bids[0].S_id)+"_"+time.Now().Format("2006-01-02_15:04:05")+".csv"), os.O_APPEND|os.O_CREATE|os.O_RDWR, os.ModeAppend|0755)
-	f, err := os.OpenFile(path.Join(conf.ReportsFolder,"bids_"+strconv.Itoa(bids[0].S_id)+"_"+time.Now().Format("2006-01-02_15:04:05")+".csv"), os.O_CREATE|os.O_RDWR, 0755)
+	f, err := os.OpenFile(path.Join(conf.ReportsFolder, "bids_"+strconv.Itoa(bids[0].S_id)+"_"+time.Now().Format("2006-01-02_15:04:05")+".csv"), os.O_CREATE|os.O_RDWR, 0755)
 	if err != nil {
 		return err
 	}
@@ -124,9 +124,9 @@ func writeCSVReports(conf *config.Config, bids []tools.Bid, close_pos []tools.Po
 
 	var lines_pos [][]string
 
-	lines_pos = append(lines_pos, []string{"Position","Open Time","Close Time","Open Value","Close Value", "Diff Value", "Close For", "Sma_12", "Sma_24", "diff_sma_12_24"})
+	lines_pos = append(lines_pos, []string{"Position", "Open Time", "Close Time", "Open Value", "Close Value", "Diff Value", "Close For", "Sma_12", "Sma_24", "diff_sma_12_24"})
 
-	for _,c := range close_pos {
+	for _, c := range close_pos {
 
 		var pos string
 		switch c.Buy {
@@ -150,14 +150,14 @@ func writeCSVReports(conf *config.Config, bids []tools.Bid, close_pos []tools.Po
 		var diff_sma_12_24 float64
 		diff_sma_12_24 = sma_24 - sma_12
 
-		if sma_12 == 0 || sma_24 == 0{
+		if sma_12 == 0 || sma_24 == 0 {
 			diff_sma_12_24 = 0
 		}
 
-		lines_pos = append(lines_pos, []string{pos,c.Open_time.Format("2006-01-02 15:04:05"),c.Close_time.Format("2006-01-02 15:04:05"),strconv.FormatFloat(c.Open_value, 'f', 0, 32),strconv.FormatFloat(c.Close_value, 'f', 0, 32),strconv.FormatFloat(c.Diff_value, 'f', 0, 32), c.Close_for,strconv.FormatFloat(sma_12, 'f', 0, 32),strconv.FormatFloat(sma_24, 'f', 0, 32),strconv.FormatFloat(diff_sma_12_24, 'f', 0, 32)})
+		lines_pos = append(lines_pos, []string{pos, c.Open_time.Format("2006-01-02 15:04:05"), c.Close_time.Format("2006-01-02 15:04:05"), strconv.FormatFloat(c.Open_value, 'f', 0, 32), strconv.FormatFloat(c.Close_value, 'f', 0, 32), strconv.FormatFloat(c.Diff_value, 'f', 0, 32), c.Close_for, strconv.FormatFloat(sma_12, 'f', 0, 32), strconv.FormatFloat(sma_24, 'f', 0, 32), strconv.FormatFloat(diff_sma_12_24, 'f', 0, 32)})
 	}
 
-	f_pos, err := os.OpenFile(path.Join(conf.ReportsFolder,"pos_sma_"+strconv.Itoa(bids[0].S_id)+"_"+time.Now().Format("2006-01-02_15:04:05")+".csv"), os.O_APPEND|os.O_CREATE|os.O_RDWR, os.ModeAppend|0755)
+	f_pos, err := os.OpenFile(path.Join(conf.ReportsFolder, "pos_sma_"+strconv.Itoa(bids[0].S_id)+"_"+time.Now().Format("2006-01-02_15:04:05")+".csv"), os.O_APPEND|os.O_CREATE|os.O_RDWR, os.ModeAppend|0755)
 	if err != nil {
 		return err
 	}
@@ -168,7 +168,6 @@ func writeCSVReports(conf *config.Config, bids []tools.Bid, close_pos []tools.Po
 			return err
 		}
 	}
-
 
 	return nil
 }

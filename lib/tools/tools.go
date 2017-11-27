@@ -17,26 +17,26 @@ type Database struct {
 }
 
 type Bid struct {
-	Sv_id                    int
-	S_id										 int
-	Bid_at                   time.Time
-	Last_bid                 float64
-	Calculations						 []Calculations
+	Sv_id        int
+	S_id         int
+	Bid_at       time.Time
+	Last_bid     float64
+	Calculations []Calculations
 }
 
 type Calculations struct {
-	Type		string
-	Value		float64
+	Type  string
+	Value float64
 }
 
 type Position struct {
-	Buy bool
-	Open_time time.Time
-	Open_value float64
-	Close_time time.Time
-	Close_value float64
-  Diff_value float64
-	Close_for string
+	Buy          bool
+	Open_time    time.Time
+	Open_value   float64
+	Close_time   time.Time
+	Close_value  float64
+	Diff_value   float64
+	Close_for    string
 	Calculations []Calculations
 }
 

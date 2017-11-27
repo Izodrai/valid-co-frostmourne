@@ -75,9 +75,9 @@ func Calc_potential(bids []tools.Bid, open_pos, close_pos *[]tools.Position) {
 		*open_pos = tmp_open_pos
 
 		if diff_sma_12_24 >= 1 {
-			*open_pos = append(*open_pos, tools.Position{true, bid.Bid_at, bid.Last_bid, time.Time{}, 0.0, 0.0,"",[]tools.Calculations{}})
+			*open_pos = append(*open_pos, tools.Position{true, bid.Bid_at, bid.Last_bid, time.Time{}, 0.0, 0.0, "", []tools.Calculations{}})
 		} else if diff_sma_12_24 <= -1 {
-			*open_pos = append(*open_pos, tools.Position{false, bid.Bid_at, bid.Last_bid, time.Time{}, 0.0, 0.0,"",[]tools.Calculations{}})
+			*open_pos = append(*open_pos, tools.Position{false, bid.Bid_at, bid.Last_bid, time.Time{}, 0.0, 0.0, "", []tools.Calculations{}})
 		}
 	}
 

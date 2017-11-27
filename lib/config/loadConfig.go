@@ -7,8 +7,8 @@ import (
 )
 
 type Config struct {
-	DbObj tools.Database `json:"Database"`
-	SymbolId int
+	DbObj         tools.Database `json:"Database"`
+	SymbolId      int
 	ReportsFolder string
 }
 

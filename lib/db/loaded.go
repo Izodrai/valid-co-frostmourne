@@ -4,8 +4,8 @@ import (
 	"../config"
 	"../log"
 	"../tools"
-	"encoding/json"
 	"database/sql"
+	"encoding/json"
 	"time"
 )
 
@@ -69,7 +69,7 @@ func LoadBid(conf *config.Config, ct_b int, bids *[]tools.Bid) error {
 	for rows1.Next() {
 		var (
 			BidAt_b, Calc_b []byte
-			b       tools.Bid
+			b               tools.Bid
 		)
 
 		bar1.Increment()
@@ -78,8 +78,8 @@ func LoadBid(conf *config.Config, ct_b int, bids *[]tools.Bid) error {
 			&b.Sv_id,
 			&b.S_id,
 			&BidAt_b,
-		  &b.Last_bid,
-		  &Calc_b)
+			&b.Last_bid,
+			&Calc_b)
 
 		if err != nil {
 			d.Close()
